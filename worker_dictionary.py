@@ -10,9 +10,10 @@ channel.queue_declare(queue='dict', durable=True)
 
 def callback(ch, method, properties, body):
     print ("[x] Received {}".format(body))
+    ch.basic_ack(delivery_tag = method.delivery_tag)
+    # simulate cpu intensive task
     time.sleep( 1)
     print("[x] Done")
-    ch.basic_ack(delivery_tag = method.delivery_tag)
 
 channel.basic_consume(callback, queue='dict')
 
