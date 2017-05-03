@@ -1,5 +1,8 @@
 # distcompg2t2
+==============
 Distributed Computing Project Group 2 Team 2
+
+Distributed MD5 cracker. The system uses one queue per worker for  simplicity's sake.
 
 Setup
 =====
