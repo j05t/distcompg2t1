@@ -13,3 +13,15 @@ rabbitmq-plugins enable rabbitmq_management
 # install Python module
 pip3 install pika
 
+
+Usage
+=====
+
+# start workers
+./worker_bruteforce.py &
+./worker_dict.py &
+./worker_gpu.py &
+
+# create new distributed task
+./new_task.py MYHASHVALUEHERE
+
