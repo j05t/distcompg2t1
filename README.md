@@ -1,9 +1,9 @@
-#distcompg2t2
+# distcompg2t2
 Distributed Computing Project Group 2 Team 2
 Distributed MD5 cracker. The system uses one queue per worker for  simplicity's sake.
 
-##Setup
-###installation of rabbitmq
+## Setup
+### installation of rabbitmq
 sudo apt install rabbitmq-server
 ### optional: enable management interface on http://localhost:15672
 rabbitmq-plugins enable rabbitmq_management
@@ -11,7 +11,7 @@ rabbitmq-plugins enable rabbitmq_management
 pip3 install pika
 
 
-#U#sage
+## Usage
 ### start message queue service
 rabbitmqctl start
 
