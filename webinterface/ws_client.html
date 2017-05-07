@@ -195,6 +195,7 @@
 
         function send() {
             var hash = md5(document.getElementById("password").value);
+            var status = document.getElementById("status");
 
             if ("WebSocket" in window) {
                 // Let us open a web socket
@@ -202,20 +203,20 @@
                 ws.onopen = function () {
                     // Web Socket is connected, send data using send()
                     ws.send(hash);
-                    document.getElementById("status").innerHTML = "sent hash " + hash;
+                    status.innerHTML += "\nsent hash " + hash;
                 };
                 ws.onmessage = function (evt) {
                     var received_msg = evt.data;
-                    document.getElementById("status").innerHTML = "Results: " + received_msg;
+                    status.innerHTML += "\nResults: " + received_msg;
                 };
                 ws.onclose = function () {
                     // websocket is closed.
-                    alert("Connection is closed...");
+                    status.innerHTML += "\nConnection is closed...";
                 };
             }
             else {
                 // The browser doesn't support WebSocket
-                alert("WebSocket NOT supported by your Browser!");
+                status.innerHTML = "WebSocket NOT supported by your Browser!";
             }
         }
     </script>
@@ -226,5 +227,5 @@
     <input type="password" id="password" name="password"/>
     <input type="submit" onclick="send()"/>
 </form>
-<p id="status">Enter your password</p>
+<pre id="status">Enter your password to check MD5</pre>
 </body>

@@ -38,7 +38,7 @@ wsServer.on('request', function (request) {
     connection.on('message', function (message) {
         if (message.type === 'utf8') {
             var msg = message.utf8Data;
-            console.log('Received Hash: ' + msg);
+            console.log('[*] Received Hash: ' + msg);
 
             // Dispatch to workers
             var amqp = require('amqplib/callback_api');
@@ -54,8 +54,23 @@ wsServer.on('request', function (request) {
             });
             // end dispatching code
 
-            // todo: handle result messages
-            connection.sendUTF("i didn't do nuffin");
+            // start result handling
+            amqp.connect('amqp://localhost', function(err, conn) {
+                conn.createChannel(function(err, ch) {
+                    var q = 'result';
+
+                    ch.assertQueue(q, {durable: true});
+                    console.log(" [*] Waiting for messages in %s.", q);
+                    ch.consume(q, function(msg) {
+                        var s = msg.content.toString();
+                        console.log(" [x] Received %s", s);
+                        connection.sendUTF(s);
+                    }, {noAck: true});
+                });
+            });
+
+            // todo: kill other workers when MD5 collision is found
+            // end result handling
         }
     });
     connection.on('close', function (reasonCode, description) {

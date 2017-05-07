@@ -11,6 +11,13 @@ rabbitmq-plugins enable rabbitmq_management
 pip3 install pika
 
 
+### Setup OpenCL
+sudo apt-get install ocl-icd-libopencl1 opencl-headers clinfo
+
+### Download and install hashcat under /usr/local/share/hashcat
+https://hashcat.net
+
+
 ## Usage
 ### start message queue service
 rabbitmqctl start
