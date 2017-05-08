@@ -18,7 +18,7 @@ def callback(ch, method, properties, body):
 
     # publish to queue result
     print("[x] Done, publishing to result queue")
-    channel.queue_declare(queue='result', durable=True)
+    channel.queue_declare(queue="result", durable=True)
     channel.basic_publish(exchange='',
                           routing_key=hash,
                           body="cracked with dictionary attack:" + hash,

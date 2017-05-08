@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import pika
-import time
+import subprocess
+
+hc = "hashcat/hashcat64.bin"
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
@@ -13,18 +15,26 @@ def callback(ch, method, properties, body):
     print ("[x] Received ", hash)
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
-    # simulate cpu intensive task
-    time.sleep( 1)
+    # write hash to temporary file
+    f = open("/tmp/crackme", "w+")
+    f.write(hash)
+    f.close()
 
-    # publish to queue result
-    print("[x] Done, publishing to result queue")
-    channel.queue_declare(queue='result', durable=True)
-    channel.basic_publish(exchange='',
-                          routing_key=hash,
-                          body="cracked with gpu bruteforce:" + hash,
-                          properties=pika.BasicProperties(
-                             delivery_mode = 2, # make message persistent
-                          ))
+    # find collision using gpu bruteforce, todo: set timeout
+    r = subprocess.run([hc, "-a3", "/tmp/crackme"])
+
+    if r.returncode == 0:
+      msg = subprocess.run([hc, "--show", "/tmp/crackme"], stdout=subprocess.PIPE)
+      msg = msg.stdout.decode("utf-8")
+      # publish result
+      print("[x] Done, publishing to result queue")
+      channel.queue_declare(queue="result", durable=True)
+      channel.basic_publish(exchange='',
+                            routing_key=hash,
+                            body="cracked with gpu bruteforce:" + msg,
+                            properties=pika.BasicProperties(
+                               delivery_mode = 2, # make message persistent
+                            ))
 
 channel.basic_consume(callback, queue='gpu')
 
