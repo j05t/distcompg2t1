@@ -201,7 +201,7 @@
                 };
                 ws.onmessage = function (evt) {
                     var received_msg = evt.data;
-                    status.innerHTML += "\nResults: " + received_msg;
+                    status.innerHTML += "\n" + received_msg;
                 };
                 ws.onclose = function () {
                     // websocket is closed.

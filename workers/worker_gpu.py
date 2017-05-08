@@ -25,7 +25,7 @@ def callback(ch, method, properties, body):
 
     if r.returncode == 0:
       msg = subprocess.run([hc, "--show", "/tmp/crackme"], stdout=subprocess.PIPE)
-      msg = msg.stdout.decode("utf-8")
+      msg = msg.stdout.decode("utf-8").strip('\n')
       # publish result
       print("[x] Done, publishing to result queue")
       channel.queue_declare(queue="result", durable=True)
