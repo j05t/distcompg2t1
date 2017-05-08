@@ -55,14 +55,14 @@ wsServer.on('request', function (request) {
             // end dispatching code
 
             // start result handling
-            amqp.connect('amqp://localhost', function(err, conn) {
-                conn.createChannel(function(err, ch) {
+            amqp.connect('amqp://localhost', function (err, conn) {
+                conn.createChannel(function (err, ch) {
                     // use hash to uniquely identify result message
                     var q = msg;
 
                     ch.assertQueue(q, {durable: true});
                     console.log(" [*] Waiting for messages in queue %s", q);
-                    ch.consume(q, function(msg) {
+                    ch.consume(q, function (msg) {
                         var s = msg.content.toString();
                         console.log(" [x] %s", s);
                         connection.sendUTF(s);
