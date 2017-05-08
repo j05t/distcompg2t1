@@ -16,22 +16,22 @@ def callback(ch, method, properties, body):
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
     # write hash to temporary file
-    f = open("/tmp/crackme", "w+")
+    f = open("/tmp/crackme_gpu", "w+")
     f.write(hash)
     f.close()
 
-    # find collision using gpu bruteforce, todo: set timeout
-    r = subprocess.run([hc, "-a3", "/tmp/crackme"])
+    # find collision using gpu bruteforce attack, todo: set timeout
+    r = subprocess.run([hc, "-a3", "/tmp/crackme_gpu"])
 
     if r.returncode == 0:
-      msg = subprocess.run([hc, "--show", "/tmp/crackme"], stdout=subprocess.PIPE)
+      msg = subprocess.run([hc, "--show", "/tmp/crackme_gpu"], stdout=subprocess.PIPE)
       msg = msg.stdout.decode("utf-8").strip('\n')
       # publish result
       print("[x] Done, publishing to result queue")
       channel.queue_declare(queue="result", durable=True)
       channel.basic_publish(exchange='',
                             routing_key=hash,
-                            body="cracked with gpu bruteforce:" + msg,
+                            body="cracked with gpu bruteforce attack:" + msg,
                             properties=pika.BasicProperties(
                                delivery_mode = 2, # make message persistent
                             ))
