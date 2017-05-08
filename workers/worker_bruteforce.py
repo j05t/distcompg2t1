@@ -21,7 +21,7 @@ def callback(ch, method, properties, body):
     channel.queue_declare(queue="result", durable=True)
     channel.basic_publish(exchange='',
                           routing_key=hash,
-                          body="cracked with bruteforce attack:" + hash + ":not implemented yet",
+                          body="bruteforce attack:" + hash + ":not implemented yet",
                           properties=pika.BasicProperties(
                              delivery_mode = 2, # make message persistent
                           ))
