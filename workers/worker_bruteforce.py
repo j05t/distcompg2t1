@@ -20,7 +20,7 @@ def callback(ch, method, properties, body):
     print("[x] Done, publishing to result queue")
     channel.queue_declare(queue='result', durable=True)
     channel.basic_publish(exchange='',
-                          routing_key="result",
+                          routing_key=hash,
                           body="cracked with bruteforce:" + hash,
                           properties=pika.BasicProperties(
                              delivery_mode = 2, # make message persistent

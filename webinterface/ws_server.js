@@ -34,7 +34,7 @@ var wsServer = new WebSocketServer({
 
 wsServer.on('request', function (request) {
     var connection = request.accept();
-    console.log((new Date()) + ' Connection accepted.');
+    console.log((new Date()) + ' Connection accepted');
     connection.on('message', function (message) {
         if (message.type === 'utf8') {
             var msg = message.utf8Data;
@@ -48,7 +48,7 @@ wsServer.on('request', function (request) {
                     conn.createChannel(function (err, ch) {
                         ch.assertQueue(q, {durable: true});
                         ch.sendToQueue(q, new Buffer(msg), {persistent: true});
-                        console.log(" [x] Sent '%s' to queue '%s'", msg, q);
+                        console.log("[x] Sent '%s' to queue '%s'", msg, q);
                     });
                 });
             });
@@ -57,13 +57,14 @@ wsServer.on('request', function (request) {
             // start result handling
             amqp.connect('amqp://localhost', function(err, conn) {
                 conn.createChannel(function(err, ch) {
-                    var q = 'result';
+                    // use hash to uniquely identify result message
+                    var q = msg;
 
                     ch.assertQueue(q, {durable: true});
-                    console.log(" [*] Waiting for messages in %s.", q);
+                    console.log(" [*] Waiting for messages in queue %s", q);
                     ch.consume(q, function(msg) {
                         var s = msg.content.toString();
-                        console.log(" [x] Received %s", s);
+                        console.log(" [x] %s", s);
                         connection.sendUTF(s);
                     }, {noAck: true});
                 });
