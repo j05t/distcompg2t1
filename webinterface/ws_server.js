@@ -69,8 +69,6 @@ wsServer.on('request', function (request) {
                     }, {noAck: true});
                 });
             });
-
-            // todo: kill other workers when MD5 collision is found
             // end result handling
         }
     });

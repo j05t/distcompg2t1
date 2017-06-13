@@ -20,8 +20,8 @@ def callback(ch, method, properties, body):
     f.write(hash)
     f.close()
 
-    # find collision using gpu bruteforce attack, todo: set timeout
-    r = subprocess.run([hc, "-a3", "/tmp/crackme_gpu"])
+    # find collision using gpu bruteforce attack, 30 min timeout
+    r = subprocess.run([hc, "-a3", "/tmp/crackme_gpu"], timeout=1800)
 
     if r.returncode == 0:
       msg = subprocess.run([hc, "--show", "/tmp/crackme_gpu"], stdout=subprocess.PIPE)
