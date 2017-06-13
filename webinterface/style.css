@@ -1,0 +1,36 @@
+#input {
+    max-width: 400px;
+    margin: 20px auto 0;
+    padding: 10px 20px 20px;
+    text-align: right;
+}
+
+#input > label,
+#input > input {
+    display: block;
+    margin: 10px 0 0;
+    text-align: left;
+}
+
+#input > label {
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+#input > input {
+    font-size: 1.2em;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+}
+
+#status {
+    max-width: 400px;
+    margin: 20px auto 0;
+    padding: 10px 20px 20px;
+}
+
+h1 {
+    text-align: center;
+    color: cornflowerblue;
+}
