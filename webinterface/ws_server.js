@@ -16,14 +16,23 @@ var server = http.createServer(callback).listen(1337, "127.0.0.1");
 console.log("Webserver running on port 1337...");
 
 function callback(request, response) {
-    var head = "<!doctype html>" +
-        "<html>\n";
-    response.writeHead(200, "OK Node", {"content-type": "text/html; charset=utf-8"});
-    response.write(head);
-    fs.readFile("ws_client.html", function (err, data) {
-        body = data + "</html>";
-        response.end(body)
-    })
+    if (request.url == '/style.css') {
+        fs.readFile('./style.css', function (err, data) {
+            response.end(data);
+        });
+    } else if (request.url == '/md5.js') {
+        fs.readFile('./md5.js', function (err, data) {
+            response.end(data);
+        });
+    } else {
+        var head = "<!DOCTYPE html>\n<html>\n";
+        response.writeHead(200, "OK Node", {"content-type": "text/html; charset=utf-8"});
+        response.write(head);
+        fs.readFile("ws_client.html", function (err, data) {
+            body = data + "</html>";
+            response.end(body)
+        })
+    }
 }
 
 
